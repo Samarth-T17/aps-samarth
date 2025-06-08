@@ -750,6 +750,38 @@ margin: 0;
 .step-icon {
   margin-bottom: 1rem;
 }
+.efficiency-table, .hw-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.efficiency-table th, .efficiency-table td,
+.hw-table th, .hw-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.scalability-metrics {
+  display: flex;
+  justify-content: space-around;
+  margin: 15px 0;
+}
+.metric {
+  text-align: center;
+}
+.metric-value {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.bottleneck-viz {
+  margin: 15px 0;
+}
+.bottleneck-stage {
+  margin-bottom: 10px;
+}
+.stage-bar {
+  height: 20px;
+  border-radius: 4px;
+}
 }
   </style>
 </head>
@@ -874,7 +906,7 @@ margin: 0;
       
       <div class="business-card">
         <div class="case-header">
-          <div class="case-number">01 System Design</div>
+          <div class="case-number">01 System Design of Instagram</div>
         </div>
         <div class="card-content">
           <p>Enabling visual search and product identification through natural language prompts. Customers could take a photo of a store shelf and ask "show me gluten-free options" to have relevant products highlighted through segmentation.</p>
@@ -884,67 +916,113 @@ margin: 0;
         <div class="case-details">
           <h4 class="details-title">System Architecture</h4>
           
-          <div class="architecture-grid">
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-balance-scale"></i></div>
-              <h5>Load Balancer</h5>
-              <p>Distributes incoming traffic across multiple servers, ensuring <strong>high availability</strong> and preventing <strong>server overload</strong>.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-image"></i></div>
-              <h5>Image Service</h5>
-              <p>Handles <strong>upload/retrieval APIs</strong>, returns <strong>S3 image paths</strong> to clients, and manages image metadata operations.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-              <h5>S3 Object Storage</h5>
-              <p>Stores actual <strong>image/video files</strong> with <strong>scalable, reliable</strong> architecture, integrated with CloudFront for faster delivery.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-globe"></i></div>
-              <h5>CloudFront CDN</h5>
-              <p>Content Delivery Network for <strong>global image distribution</strong>, caching images at edge locations to <strong>reduce latency</strong> worldwide.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-database"></i></div>
-              <h5>Image DynamoDB</h5>
-              <p>Stores <strong>image metadata</strong> (uploadId, userId, location, caption) using <strong>NoSQL database</strong> for handling billions of records efficiently.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-bullhorn"></i></div>
-              <h5>SNS Notification Service</h5>
-              <p>Publishes <strong>upload events</strong> when users post content, enabling <strong>decoupled communication</strong> between services.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-inbox"></i></div>
-              <h5>SQS Queue Service</h5>
-              <p>Subscribes to upload events from SNS, <strong>queuing messages</strong> for feed processing and ensuring <strong>reliable event handling</strong>.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-cogs"></i></div>
-              <h5>Feed Generation Service</h5>
-              <p>Processes upload events from SQS, generates <strong>personalized feeds</strong> for users, and updates <strong>follower feeds</strong> when content is posted.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-table"></i></div>
-              <h5>Feed DynamoDB</h5>
-              <p>Stores <strong>pre-computed user feeds</strong> with structure (userId + creationDate + uploadId) enabling <strong>fast feed retrieval</strong>.</p>
-            </div>
-            
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-bolt"></i></div>
-              <h5>Redis Cache</h5>
-              <p>In-memory cache layer between services and DynamoDB, <strong>reduces read latency</strong> for frequently accessed feeds and improves <strong>overall system performance</strong>.</p>
-            </div>
-          </div>
+          <h5>Load Balancer</h5>
+          <p>Distributes incoming traffic across multiple servers, ensuring <strong>high availability</strong> and preventing <strong>server overload</strong>.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Queue, Heap</li>
+            <li><strong>Algorithms:</strong> Round-Robin, Least Connections</li>
+            <li><strong>Efficiency:</strong> O(1) – O(log N)</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-image"></i></div>
+          <h5>Image Service</h5>
+          <p>Handles <strong>upload/retrieval APIs</strong>, returns <strong>S3 image paths</strong> to clients, and manages image metadata operations.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Key-Value Store</li>
+            <li><strong>Algorithms:</strong> Metadata Lookup, Image Resize</li>
+            <li><strong>Efficiency:</strong> O(1) metadata, O(n×m) for image ops</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <h5>S3 Object Storage</h5>
+          <p>Stores actual <strong>image/video files</strong> with <strong>scalable, reliable</strong> architecture, integrated with CloudFront for faster delivery.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Trie, Hash Map</li>
+            <li><strong>Algorithms:</strong> Sharding, Distributed Hashing</li>
+            <li><strong>Efficiency:</strong> O(1) read/write</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-globe"></i></div>
+          <h5>CloudFront CDN</h5>
+          <p>Content Delivery Network for <strong>global image distribution</strong>, caching images at edge locations to <strong>reduce latency</strong> worldwide.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Cache Map, Priority Queue</li>
+            <li><strong>Algorithms:</strong> LRU, LFU</li>
+            <li><strong>Efficiency:</strong> O(1) hit, O(log N) eviction</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-database"></i></div>
+          <h5>Image DynamoDB</h5>
+          <p>Stores <strong>image metadata</strong> (uploadId, userId, location, caption) using <strong>NoSQL database</strong> for handling billions of records efficiently.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> LSM Tree, Bloom Filter</li>
+            <li><strong>Algorithms:</strong> Append-Only Writes, Range Queries</li>
+            <li><strong>Efficiency:</strong> O(1) write, O(log N) read</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-bullhorn"></i></div>
+          <h5>SNS Notification Service</h5>
+          <p>Publishes <strong>upload events</strong> when users post content, enabling <strong>decoupled communication</strong> between services.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Hash Map</li>
+            <li><strong>Algorithms:</strong> Observer Pattern, Fanout</li>
+            <li><strong>Efficiency:</strong> O(k) for k subscribers</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-inbox"></i></div>
+          <h5>SQS Queue Service</h5>
+          <p>Subscribes to upload events from SNS, <strong>queuing messages</strong> for feed processing and ensuring <strong>reliable event handling</strong>.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> FIFO Queue</li>
+            <li><strong>Algorithms:</strong> Visibility Timeout, Retry Logic</li>
+            <li><strong>Efficiency:</strong> O(1) enqueue/dequeue</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-cogs"></i></div>
+          <h5>Feed Generation Service</h5>
+          <p>Processes upload events from SQS, generates <strong>personalized feeds</strong> for users, and updates <strong>follower feeds</strong> when content is posted.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Hash Map, Heap, Queue</li>
+            <li><strong>Algorithms:</strong> Top-K Selection, Merge Sorted Lists</li>
+            <li><strong>Efficiency:</strong> O(N log K) for N followers, K feed length</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-table"></i></div>
+          <h5>Feed DynamoDB</h5>
+          <p>Stores <strong>pre-computed user feeds</strong> with structure (userId + creationDate + uploadId) enabling <strong>fast feed retrieval</strong>.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Partition + Sort Key</li>
+            <li><strong>Algorithms:</strong> Range Queries</li>
+            <li><strong>Efficiency:</strong> O(log N + k)</li>
+          </ul>
+        </div>
+  
+        <div class="component-card">
+          <div class="component-icon"><i class="fas fa-bolt"></i></div>
+          <h5>Redis Cache</h5>
+          <p>In-memory cache layer between services and DynamoDB, <strong>reduces read latency</strong> for frequently accessed feeds and improves <strong>overall system performance</strong>.</p>
+          <ul>
+            <li><strong>Data Structures:</strong> Hash Map, Sorted Set</li>
+            <li><strong>Algorithms:</strong> LRU, TTL Expiration</li>
+            <li><strong>Efficiency:</strong> O(1)–O(log N)</li>
+          </ul>
+        </div>
           
           <!-- Architecture Diagram -->
           <div class="architecture-visual">
@@ -1062,7 +1140,7 @@ margin: 0;
                   <h5>Late Fusion</h5>
                   <p>Generator processes each document individually, aggregates responses using <strong>scoring functions</strong>:</p>
                   <pre><code>for doc in retrieved:
-        score = generator(query + doc)
+          score = generator(query + doc)
       answer = aggregate(score)</code></pre>
                 </div>
               </div>
@@ -1095,145 +1173,225 @@ margin: 0;
             </div>
           </div>
       
+          <!-- Data Structures and Algorithms Summary -->
+          <div class="data-flow">
+            <h4 class="flow-title">Data Structures and Algorithms Used</h4>
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="step-icon"><i class="fas fa-layer-group"></i></div>
+                <div class="step-content">
+                  <h5>Data Structures</h5>
+                  <ul>
+                    <li><strong>Dense Vectors:</strong> Fixed-size float arrays for document/query embeddings</li>
+                    <li><strong>ANN Index (FAISS):</strong> Inverted index, HNSW graph, IVF+PQ</li>
+                    <li><strong>Transformer Attention Matrices:</strong> Query-Key-Value tensors</li>
+                    <li><strong>Vector Store:</strong> FAISS index or Elasticsearch inverted index</li>
+                    <li><strong>Batch Queues:</strong> For query parallelism during inference</li>
+                  </ul>
+                </div>
+              </div>
+      
+              <div class="flow-step">
+                <div class="step-icon"><i class="fas fa-brain"></i></div>
+                <div class="step-content">
+                  <h5>Algorithms</h5>
+                  <ul>
+                    <li><strong>Cosine Similarity:</strong> To measure embedding similarity (O(d))</li>
+                    <li><strong>Approximate Nearest Neighbors (ANN):</strong> FAISS (O(log N) – O(1) depending on method)</li>
+                    <li><strong>Transformer Attention:</strong> Scaled dot-product attention (O(n²d))</li>
+                    <li><strong>Beam Search / Greedy Decoding:</strong> During response generation</li>
+                    <li><strong>Cross-Entropy Loss:</strong> For training the generator</li>
+                    <li><strong>Marginal Likelihood Estimation:</strong> For retrieval-conditioned supervision</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+      
         </div>
       </div>
+      
         
       <div class="business-card">
         <div class="case-header">
           <div class="case-number">05</div>
-          <h3 class="case-title">Billion-Scale Similarity Search with Faiss</h3>
+          <h3 class="case-title">Faiss Data Structures & Algorithms Analysis</h3>
         </div>
       
         <div class="card-content">
           <p>
-            Faiss enables fast and memory-efficient similarity search on billion-scale datasets. By combining vector quantization, advanced indexing, and GPU-accelerated algorithms, it overcomes the curse of dimensionality while achieving state-of-the-art performance on massive vector collections.
+            Deep dive into Faiss's core components, their computational characteristics, and efficiency tradeoffs. Analysis covers time/space complexity, memory hierarchy optimization, and scalability.
           </p>
         </div>
       
-        <!-- System Architecture Details -->
+        <!-- Core Algorithms & Data Structures -->
         <div class="case-details">
-          <h4 class="details-title">System Architecture</h4>
+          <h4 class="details-title">Core Data Structures & Algorithms</h4>
       
           <div class="architecture-grid">
             <div class="component-card">
-              <div class="component-icon"><i class="fas fa-compress"></i></div>
+              <div class="component-icon"><i class="fas fa-sitemap"></i></div>
+              <h5>Inverted File Index (IVF)</h5>
+              <p><strong>Structure:</strong> Voronoi partitioning + inverted lists<br>
+              <strong>Algorithms:</strong> k-means clustering, list pruning<br>
+              <strong>Search:</strong> O(n_probe × (D×k + list_size)) per query</p>
+            </div>
+      
+            <div class="component-card">
+              <div class="component-icon"><i class="fas fa-cubes"></i></div>
               <h5>Product Quantization (PQ)</h5>
-              <p>Compresses vectors into <strong>1-byte subvectors</strong>. A 128D vector can be encoded using <strong>20 bytes</strong>, enabling efficient similarity search with <strong>precomputed distance tables</strong>.</p>
+              <p><strong>Structure:</strong> Codebooks + compressed codes<br>
+              <strong>Algorithms:</strong> Asymmetric distance computation (ADC)<br>
+              <strong>Memory:</strong> O(D×m×k*) codebook, O(n×m) codes</p>
             </div>
       
             <div class="component-card">
-              <div class="component-icon"><i class="fas fa-sync-alt"></i></div>
-              <h5>Optimized Product Quantization (OPQ)</h5>
-              <p>Improves quantization accuracy using a learned <strong>rotation matrix</strong>. Reduces error by transforming data before PQ, making it <strong>dimensionally decorrelated</strong>.</p>
-            </div>
-      
-            <div class="component-card">
-              <div class="component-icon"><i class="fas fa-th"></i></div>
+              <div class="component-icon"><i class="fas fa-project-diagram"></i></div>
               <h5>Inverted Multi-Index (IMI)</h5>
-              <p>Partitions vector space using <strong>multi-level clustering</strong>. Enables logarithmic search across <strong>2²⁸ partitions</strong> in massive datasets.</p>
+              <p><strong>Structure:</strong> Hierarchical IVF with Cartesian products<br>
+              <strong>Algorithms:</strong> Multi-directional k-means<br>
+              <strong>Search:</strong> O((n_probe)^L) where L=index depth</p>
             </div>
       
             <div class="component-card">
-              <div class="component-icon"><i class="fas fa-microchip"></i></div>
-              <h5>GPU-Optimized k-Selection</h5>
-              <p>Implements <strong>single-pass top-k selection</strong> on GPU with state in registers. Delivers <strong>55% peak memory bandwidth</strong> and enables <strong>kernel fusion</strong>.</p>
+              <div class="component-icon"><i class="fas fa-braille"></i></div>
+              <h5>HNSW (Hierarchical NSW)</h5>
+              <p><strong>Structure:</strong> Layered proximity graphs<br>
+              <strong>Algorithms:</strong> Greedy graph traversal with hierarchy pruning<br>
+              <strong>Search:</strong> O(log(n)) empirical complexity</p>
             </div>
           </div>
       
-          <!-- Architecture Diagram -->
-          <div class="architecture-visual">
-            <img src="faiss.png" alt="System Architecture Diagram" class="architecture-image">
-          </div>
-      
-          <!-- Data Flow Section -->
+          <!-- Efficiency Analysis -->
           <div class="data-flow">
-            <h4 class="flow-title">Data Flow</h4>
+            <h4 class="flow-title">Computational Efficiency Analysis</h4>
             <div class="flow-steps">
               <div class="flow-step">
-                <div class="step-icon"><i class="fas fa-random"></i></div>
+                <div class="step-icon"><i class="fas fa-stopwatch"></i></div>
                 <div class="step-content">
-                  <h5>Hybrid Pipeline</h5>
-                  <p>Input Vectors → OPQ → IMI (coarse index) → PQ (residual encoding) → Similarity Search</p>
+                  <h5>Time Complexity</h5>
+                  <table class="efficiency-table">
+                    <tr><th>Component</th><th>Training</th><th>Search</th></tr>
+                    <tr><td>IVF</td><td>O(n×D×k×iter)</td><td>O(n_probe×(list_size + D×k))</td></tr>
+                    <tr><td>PQ</td><td>O(n×D×m×k*)</td><td>O(D×k* + m×n_probe)</td></tr>
+                    <tr><td>IMI</td><td>O(n×D×k<sup>L</sup>)</td><td>O((n_probe)<sup>L</sup> × list_size)</td></tr>
+                    <tr><td>OPQ</td><td>O(n×D² + n×D×logD)</td><td>O(D²)</td></tr>
+                  </table>
                 </div>
               </div>
       
               <div class="flow-step">
                 <div class="step-icon"><i class="fas fa-memory"></i></div>
                 <div class="step-content">
-                  <h5>Memory Efficiency</h5>
-                  <p>128D vectors → PQ → 20B codes → RAM usage: <strong>30GB for 1B vectors</strong> instead of 4TB.</p>
+                  <h5>Memory Hierarchy Optimization</h5>
+                  <ul>
+                    <li><strong>PQ Precomputation:</strong> 256×m distance tables in fast cache (8KB for m=32)</li>
+                    <li><strong>Inverted Lists:</strong> Sequential access patterns for cache prefetching</li>
+                    <li><strong>GPU Registers:</strong> k-selection state kept in register memory (0 latency)</li>
+                    <li><strong>SIMD:</strong> 16-32x speedup using AVX512 for distance computations</li>
+                  </ul>
+                </div>
+              </div>
+      
+              <div class="flow-step">
+                <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="step-content">
+                  <h5>Scalability Analysis</h5>
+                  <div class="scalability-metrics">
+                    <div class="metric">
+                      <div class="metric-value">O(n log n)</div>
+                      <div class="metric-label">Indexing Complexity</div>
+                    </div>
+                    <div class="metric">
+                      <div class="metric-value">O(n<sup>0.8</sup>)</div>
+                      <div class="metric-label">Memory Growth (compressed)</div>
+                    </div>
+                    <div class="metric">
+                      <div class="metric-value">O(1/p)</div>
+                      <div class="metric-label">Multi-GPU Scaling</div>
+                    </div>
+                  </div>
+                  <p>Bottleneck shifts from memory bandwidth to computation at &gt;8 GPUs</p>
                 </div>
               </div>
             </div>
           </div>
       
-          <!-- Key Algorithms -->
+          <!-- Accuracy-Performance Tradeoffs -->
           <div class="data-flow">
-            <h4 class="flow-title">Key Algorithmic Tradeoffs</h4>
+            <h4 class="flow-title">Accuracy-Performance Tradeoffs</h4>
             <div class="flow-steps">
+              <div class="flow-step">
+                <div class="step-icon"><i class="fas fa-sliders-h"></i></div>
+                <div class="step-content">
+                  <h5>Parameter Sensitivity</h5>
+                  <ul>
+                    <li><strong>Probe Count:</strong> Linear time increase vs logarithmic recall improvement</li>
+                    <li><strong>PQ Dimensions:</strong> 4-32x memory reduction for 5-15% recall drop</li>
+                    <li><strong>OPQ Rotation:</strong> +15% accuracy at +20% pre-processing cost</li>
+                    <li><strong>Float16:</strong> &lt;0.1% recall drop for 2x throughput gain</li>
+                  </ul>
+                </div>
+              </div>
+      
               <div class="flow-step">
                 <div class="step-icon"><i class="fas fa-tachometer-alt"></i></div>
                 <div class="step-content">
-                  <h5>Speed</h5>
-                  <ul>
-                    <li>CPU: 8.5× faster than previous SOTA</li>
-                    <li>GPU: 5–20× faster than CPU</li>
-                    <li>Query: 2ms/vector (500 QPS/core) at 40% recall</li>
-                  </ul>
-                </div>
-              </div>
-      
-              <div class="flow-step">
-                <div class="step-icon"><i class="fas fa-balance-scale"></i></div>
-                <div class="step-content">
-                  <h5>Accuracy Control</h5>
-                  <ul>
-                    <li>Vary <strong>probe count</strong> to adjust recall</li>
-                    <li>Control <strong>PQ codebook size</strong></li>
-                    <li>Apply <strong>OPQ transformations</strong></li>
-                  </ul>
-                </div>
-              </div>
-      
-              <div class="flow-step">
-                <div class="step-icon"><i class="fas fa-hdd"></i></div>
-                <div class="step-content">
-                  <h5>Compression</h5>
-                  <p>Achieves <strong>8–32× compression</strong> ratios over raw vectors, while supporting billion-scale indexing.</p>
+                  <h5>Hardware-Specific Optimization</h5>
+                  <table class="hw-table">
+                    <tr><th>Component</th><th>CPU Optimization</th><th>GPU Optimization</th></tr>
+                    <tr><td>Distance Calc</td><td>AVX512 SIMD</td><td>Tensor Core FP16</td></tr>
+                    <tr><td>k-Selection</td><td>Heap-based (O(n log k))</td><td>Radix Selection (O(n))</td></tr>
+                    <tr><td>Memory Access</td><td>Cache-blocking</td><td>Coalesced reads</td></tr>
+                    <tr><td>Parallelism</td><td>OpenMP</td><td>Warp-level primitives</td></tr>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
       
-          <!-- GPU Innovations -->
+          <!-- Bottleneck Analysis -->
           <div class="data-flow">
-            <h4 class="flow-title">GPU-Specific Innovations</h4>
+            <h4 class="flow-title">System Bottleneck Analysis</h4>
             <div class="flow-steps">
               <div class="flow-step">
-                <div class="step-icon"><i class="fas fa-network-wired"></i></div>
+                <div class="step-icon"><i class="fas fa-exclamation-triangle"></i></div>
                 <div class="step-content">
-                  <h5>Multi-GPU Parallelism</h5>
-                  <ul>
-                    <li>Shards or replicates data across 8+ GPUs</li>
-                    <li>Builds k-NN graphs on 1B vectors in <strong>~12 hours</strong></li>
-                  </ul>
+                  <h5>CPU/GPU Workload Distribution</h5>
+                  <div class="bottleneck-viz">
+                    <div class="bottleneck-stage">
+                      <div class="stage-name">OPQ Rotation</div>
+                      <div class="stage-bar" style="width: 70%; background: #e74c3c;">CPU 70%</div>
+                    </div>
+                    <div class="bottleneck-stage">
+                      <div class="stage-name">Coarse Search</div>
+                      <div class="stage-bar" style="width: 85%; background: #3498db;">GPU 85%</div>
+                    </div>
+                    <div class="bottleneck-stage">
+                      <div class="stage-name">PQ Refinement</div>
+                      <div class="stage-bar" style="width: 60%; background: #3498db;">GPU 60%</div>
+                    </div>
+                  </div>
+                  <p>Data transfer CPU↔GPU becomes bottleneck at &gt;500 QPS</p>
                 </div>
               </div>
       
               <div class="flow-step">
-                <div class="step-icon"><i class="fas fa-bolt"></i></div>
+                <div class="step-icon"><i class="fas fa-wrench"></i></div>
                 <div class="step-content">
-                  <h5>Kernel Fusion & Float16</h5>
-                  <p>
-                    Fuses distance computation and top-k selection into a <strong>single GPU kernel</strong>, exploiting <strong>float16 compute</strong> for faster, lower-memory inference with negligible accuracy drop.
-                  </p>
+                  <h5>Optimization Opportunities</h5>
+                  <ul>
+                    <li><strong>Quantization:</strong> Replace OPQ with binary hashing for &gt;100x speedup (5-15% recall tradeoff)</li>
+                    <li><strong>Memory Layout:</strong> Convert inverted lists to blocked ELL format for 2.3x GPU throughput</li>
+                    <li><strong>Approximation:</strong> Stochastic nearest neighbors reduce graph traversal by 40%</li>
+                    <li><strong>Preprocessing:</strong> Apply Dimensionality Reduction (PCA) before indexing</li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
         
       <div class="business-card">
         <div class="case-header">
